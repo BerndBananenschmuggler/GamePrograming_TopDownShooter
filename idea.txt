@@ -1,0 +1,13 @@
+Player: 
+	- WASD Movement => Rotation Richtung MoveDir
+	- Schießen Richtung Maus => Rotation Richtung Maus
+Enemy:
+	- Laufen Richtung Player
+	- Nah/Fernkampf
+	- Spawnen in Wellen
+
+- nach Ende jeder Runde erhält der Spieler Geld
+- Geld wird jede Runde mehr
+- Spieler hat begrenzte Munition, die er nach jeder Runde auffüllen kann, kostet Geld
+- Spieler kann auch Waffen-Upgrades kaufen, kosten Geld
+=> Anreiz möglichst wenig Munition zu verschießen, um Upgrades zu kaufen
