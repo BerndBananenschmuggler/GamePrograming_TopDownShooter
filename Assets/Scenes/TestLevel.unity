@@ -925,6 +925,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1248501225}
   - component: {fileID: 1248501229}
+  - component: {fileID: 1248501230}
   m_Layer: 6
   m_Name: PrototypeWeapon
   m_TagString: Untagged
@@ -970,6 +971,21 @@ MonoBehaviour:
   _bulletSpawnPointTransform: {fileID: 1846468547}
   _bulletPrefab: {fileID: 6112292305853340334, guid: c075332a0880f374a85b896c2f7d9476,
     type: 3}
+--- !u!114 &1248501230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1248501224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 031226ea2bc555042b6a6460bd99e2d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hitableLayermask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &1250430372
 GameObject:
   m_ObjectHideFlags: 0
