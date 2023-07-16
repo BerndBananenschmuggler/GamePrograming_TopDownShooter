@@ -24,8 +24,8 @@ namespace Assets.Scripts.Player
 
         private void Awake()
         {
-            _rigidbody = GetComponent<Rigidbody>();
             _camera = Camera.main;
+            _rigidbody = GetComponent<Rigidbody>();
 
             if (_rigidbody == null)
                 Debug.LogWarning("Player Rigidbody missing.");
@@ -37,16 +37,16 @@ namespace Assets.Scripts.Player
             if (_moveDirection != Vector3.zero)
             {            
                 // Invokes event and triggers rotationTarget change
-                InvokeOnMoved();
+                OnMove();
             }
 
             // Set the velocity
             _rigidbody.velocity =
-                (
-                    Vector3.right * _moveDirection.x +
-                    Vector3.up * _rigidbody.velocity.y +
-                    Vector3.forward * _moveDirection.z
-                ) * _moveSpeed;
+            (
+                Vector3.right * _moveDirection.x +
+                Vector3.up * _rigidbody.velocity.y +
+                Vector3.forward * _moveDirection.z
+            ) * _moveSpeed;
         }
 
         public void HandleMovementInput(CallbackContext context)
@@ -55,7 +55,7 @@ namespace Assets.Scripts.Player
             _moveDirection = new Vector3(moveInput.x, 0, moveInput.y);
         }
 
-        protected virtual void InvokeOnMoved()
+        protected virtual void OnMove()
         {
             OnMoved?.Invoke(_moveDirection);
 

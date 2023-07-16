@@ -33,9 +33,18 @@ namespace Assets.Scripts.Player
         {
             // Set WeaponPosition in Direction Player-To-Mouse
             _weaponPositionTransform.position = GetWeaponPosition(_mouseWorldPosition, transform.position, _weaponPositionDistance);
-            // Rotate the WeaponPosition towards the Direction Player-To-Mouse        
+
+            // Rotate the WeaponPosition towards the Direction Player-To-Mouse
             _weaponPositionTransform.rotation = GetWeaponRotation(transform.position, _weaponPositionTransform.position);
-        }        
+            /*
+            // Check if rotation is neccessary
+            if (Quaternion.Angle(newWeaponRotation, _weaponPositionTransform.rotation) != 0)
+                
+                _weaponPositionTransform.rotation = newWeaponRotation;
+            else
+                Debug.LogWarning("ZERO");
+            */
+        }
 
         public void HandleLookInput(CallbackContext context)
         {
