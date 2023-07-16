@@ -62,6 +62,17 @@ namespace Assets.Scripts.Player
             _equipedWeapon.Fire();
         }
 
+        public void HandleReloadInput(CallbackContext context)
+        {
+            if (_equipedWeapon == null)
+                return;
+
+            if (context.phase != UnityEngine.InputSystem.InputActionPhase.Started)
+                return;
+
+            _equipedWeapon.Reload();
+        }
+
         /// <summary>
         /// Returns direction of <paramref name="mousePosition"/> to  <paramref name="playerPosition"/> 
         /// with range <paramref name="distanceWeaponToPlayer"/> in a circle around <paramref name="playerPosition"/>.
