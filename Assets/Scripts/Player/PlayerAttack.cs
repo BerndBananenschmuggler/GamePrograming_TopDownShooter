@@ -10,10 +10,13 @@ namespace Assets.Scripts.Player
 {
     public class PlayerAttack : MonoBehaviour
     {
+        public event Action OnAttacked;
+        public event Action OnReloaded;
+
         [SerializeField] private Transform _weaponPositionTransform;
         [SerializeField] private LayerMask _groundLayermask;
 
-        [SerializeField] private RangeWeapon _equipedWeapon;     // IST NULL wenn nicht zugewiesen
+        [SerializeField] private RangeWeapon _equippedWeapon;     // IST NULL wenn nicht zugewiesen
         private Vector3 _weaponPositionStart;
         private float _weaponPositionDistance;
 
@@ -27,6 +30,16 @@ namespace Assets.Scripts.Player
             _weaponPositionStart = _weaponPositionTransform.position;
             // Get Distance Player-To-WeaponPositionStart
             _weaponPositionDistance = Mathf.Abs(Vector3.Distance(transform.position, _weaponPositionStart));
+        }
+
+        private void OnEnable()
+        {
+            _equippedWeapon.OnReloaded += HandleWeaponReloaded;
+        }
+
+        private void OnDisable()
+        {
+            _equippedWeapon.OnReloaded -= HandleWeaponReloaded;
         }
 
         private void Update()
@@ -46,6 +59,19 @@ namespace Assets.Scripts.Player
             */
         }
 
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawSphere(_mouseWorldPosition, .1f);
+
+            Gizmos.DrawWireSphere(_weaponPositionTransform.position, .5f);
+        }
+
+        public RangeWeapon GetEquippedWeapon()
+        {
+            return _equippedWeapon;
+        }
+
         public void HandleLookInput(CallbackContext context)
         {
             // Rotate weaponSpawnPoint around Player in direction Player-To-Mouse
@@ -62,24 +88,26 @@ namespace Assets.Scripts.Player
 
         public void HandleFireInput(CallbackContext context)
         {
-            if (_equipedWeapon == null)
+            if (_equippedWeapon == null)
                 return;
 
             if (context.phase != UnityEngine.InputSystem.InputActionPhase.Started) 
                 return;
 
-            _equipedWeapon.Fire();
+            _equippedWeapon.Fire();
+
+            OnAttacked?.Invoke();
         }
 
         public void HandleReloadInput(CallbackContext context)
         {
-            if (_equipedWeapon == null)
+            if (_equippedWeapon == null)
                 return;
 
             if (context.phase != UnityEngine.InputSystem.InputActionPhase.Started)
                 return;
 
-            _equipedWeapon.Reload();
+            _equippedWeapon.Reload();
         }
 
         /// <summary>
@@ -104,14 +132,11 @@ namespace Assets.Scripts.Player
         private Quaternion GetWeaponRotation(Vector3 playerPosition, Vector3 weaponPosition)
         {
             return Quaternion.LookRotation(weaponPosition - playerPosition, Vector3.up);
-        }
+        }               
 
-        private void OnDrawGizmos()
+        private void HandleWeaponReloaded()
         {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawSphere(_mouseWorldPosition, .1f);
-
-            Gizmos.DrawWireSphere(_weaponPositionTransform.position, .5f);
+            OnReloaded?.Invoke();
         }
     }
 }

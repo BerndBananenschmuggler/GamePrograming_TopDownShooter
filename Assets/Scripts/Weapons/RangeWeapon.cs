@@ -10,6 +10,13 @@ namespace Assets.Scripts.Weapons
 {
     public abstract class RangeWeapon : MonoBehaviour 
     {
+        public event Action OnReloaded;
+
+        public float MaxAmmo { get { return _maxAmmunition; } }
+        public float CurrentAmmo { get { return _currentAmunition; } }
+        public float MaxMagSize { get { return _maximumMagSize; } }
+        public float CurrentMagFill { get { return _currentMagFill; } }
+
         [SerializeField] protected float _fireRate = 20f;     // 20 shots/sec
         [SerializeField] protected float _reloadTime = 3f;
         [SerializeField] protected float _maxAmmunition = 90;
@@ -115,6 +122,8 @@ namespace Assets.Scripts.Weapons
 
                     // DEBUG
                     LogAmmo();
+
+                    OnReloaded?.Invoke();
                 }
 
             // Make another Reload possible
