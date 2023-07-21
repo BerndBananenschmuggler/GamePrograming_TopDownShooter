@@ -2,6 +2,7 @@ using Assets.Scripts.Weapons;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
@@ -13,14 +14,18 @@ namespace Assets.Scripts.Player
         public event Action OnAttacked;
         public event Action OnReloaded;
 
-        [SerializeField] private Transform _weaponPositionTransform;
         [SerializeField] private LayerMask _groundLayermask;
 
         [SerializeField] private RangeWeapon _equippedWeapon;     // IST NULL wenn nicht zugewiesen
+        [SerializeField] private Transform _weaponPositionTransform;
         private Vector3 _weaponPositionStart;
         private float _weaponPositionDistance;
 
         private Vector3 _mouseWorldPosition = Vector3.zero;
+
+        private PlayerMovement _playerMovement;
+
+
         private void Awake()
         {
             if (_weaponPositionTransform == null)
@@ -35,7 +40,10 @@ namespace Assets.Scripts.Player
         private void OnEnable()
         {
             _equippedWeapon.OnReloaded += HandleWeaponReloaded;
-        }
+
+            _playerMovement = GetComponent<PlayerMovement>();
+            _playerMovement.OnMoved += HandlePlayerMoved;
+        }        
 
         private void OnDisable()
         {
@@ -76,17 +84,8 @@ namespace Assets.Scripts.Player
 
         public void HandleLookInput(CallbackContext context)
         {
-            // Rotate weaponSpawnPoint around Player in direction Player-To-Mouse
-            Vector3 mousePosition;
-            try
-            {
-                // Get MousePosition
-                mousePosition = Utils.GetMousePosition(Camera.main, _groundLayermask, transform);
-            
-                _mouseWorldPosition = mousePosition;
-            }
-            catch{ }        
-        }
+            UpdateMousePosition();        
+        }        
 
         public void HandleFireInput(CallbackContext context)
         {
@@ -134,7 +133,26 @@ namespace Assets.Scripts.Player
         private Quaternion GetWeaponRotation(Vector3 playerPosition, Vector3 weaponPosition)
         {
             return Quaternion.LookRotation(weaponPosition - playerPosition, Vector3.up);
-        }               
+        }
+
+        private void UpdateMousePosition()
+        {
+            // Rotate weaponSpawnPoint around Player in direction Player-To-Mouse
+            Vector3 mousePosition;
+            try
+            {
+                // Get MousePosition
+                mousePosition = Utils.GetMousePosition(Camera.main, _groundLayermask, transform);
+
+                _mouseWorldPosition = mousePosition;
+            }
+            catch { }
+        }
+
+        private void HandlePlayerMoved(Vector3 obj)
+        {
+            UpdateMousePosition();
+        }
 
         private void HandleWeaponReloaded()
         {
