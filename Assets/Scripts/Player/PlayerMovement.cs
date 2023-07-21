@@ -9,6 +9,9 @@ namespace Assets.Scripts.Player
     [RequireComponent(typeof(Rigidbody))]
     public class PlayerMovement : MonoBehaviour
     {
+        /// <summary>
+        /// Is raised when Player moves and publishes the moveDirection.
+        /// </summary>
         public event Action<Vector3> OnMoved;
 
         [SerializeField] private float _moveSpeed = 1f;
