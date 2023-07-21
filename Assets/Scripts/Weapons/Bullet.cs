@@ -14,13 +14,21 @@ namespace Assets.Scripts.Weapons
         [SerializeField] float _speed = 25f;
         [SerializeField] float _lifeTime = 10f;
 
-        private Rigidbody _rigbody;
+        private Rigidbody _rigidbody;
         private Coroutine _selfDestructionRoutine;
+        private RangeWeapon _ownerWeapon;
+        private Hitbox _hitbox;
 
         private void Awake()
         {
-            _rigbody = GetComponent<Rigidbody>();            
-        }
+            _rigidbody = GetComponent<Rigidbody>();     
+            _hitbox = GetComponentInChildren<Hitbox>();
+
+            if (_hitbox == null)
+                Debug.LogWarning("Hitbox is missing");
+            _hitbox.OnHitDetectionSucceeded += HandleHitDetectionSucceeded;
+            _hitbox.OnHitDetectionFailed += HandleHitDetectionFailed;
+        }        
 
         private void Start()
         {
@@ -30,12 +38,37 @@ namespace Assets.Scripts.Weapons
 
         private void FixedUpdate()
         {
-            _rigbody.velocity = transform.forward * _speed;
+            _rigidbody.velocity = transform.forward * _speed;
+        }
+
+        public void SetOwner(RangeWeapon owner)
+        {
+            _ownerWeapon = owner;
         }
 
         private IEnumerator DestroySelf()
         {
             yield return new WaitForSeconds(_lifeTime);
+
+            Destroy(gameObject);
+        }
+
+        private void HandleHitDetectionSucceeded(GameObject obj)
+        {
+            //// Dont do stuff to the Player
+            //if (obj.CompareTag("Player"))
+            //    return;
+
+            Debug.Log("HitSuccess");
+
+            obj.GetComponent<Hurtbox>().Trigger(_ownerWeapon.Damage);
+
+            Destroy(gameObject);
+        }
+
+        private void HandleHitDetectionFailed()
+        {
+            Debug.Log("HitFail");
 
             Destroy(gameObject);
         }

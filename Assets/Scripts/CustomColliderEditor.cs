@@ -16,8 +16,7 @@ public class CustomColliderEditor : Editor
     private SerializedProperty _isColliderActiveProp;
 
     // Derived Class Values
-    private SerializedProperty _playerHealthProp;
-    private SerializedProperty _enemyHealthProp;
+    private SerializedProperty _healthProp;
     private SerializedProperty _hitableLayersProp;
 
     private void OnEnable()
@@ -32,9 +31,8 @@ public class CustomColliderEditor : Editor
         _isColliderActiveProp = serializedObject.FindProperty("_isColliderActive");
 
         // Derived Class Values
-        _playerHealthProp = serializedObject.FindProperty("_playerHealth");
-        _enemyHealthProp = serializedObject.FindProperty("_enemyHealth");
-        _hitableLayersProp = serializedObject.FindProperty("_hitableLayers");
+        _healthProp = serializedObject.FindProperty("_health");
+        _hitableLayersProp = serializedObject.FindProperty("_hitableLayermask");
     }
 
     public override void OnInspectorGUI()
@@ -77,10 +75,8 @@ public class CustomColliderEditor : Editor
         EditorGUILayout.PropertyField(_isColliderActiveProp);
 
         // Display derived class values if possible
-        if (_playerHealthProp != null)
-            EditorGUILayout.PropertyField(_playerHealthProp);
-        if (_enemyHealthProp != null)
-            EditorGUILayout.PropertyField(_enemyHealthProp);
+        if (_healthProp != null)
+            EditorGUILayout.PropertyField(_healthProp);
         if (_hitableLayersProp != null)
             EditorGUILayout.PropertyField(_hitableLayersProp);
 

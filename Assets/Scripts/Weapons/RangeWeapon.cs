@@ -12,6 +12,7 @@ namespace Assets.Scripts.Weapons
     {
         public event Action OnReloaded;
 
+        public float Damage { get { return _damage; } }
         public float MaxAmmo { get { return _maxAmmunition; } }
         public float CurrentAmmo { get { return _currentAmunition; } }
         public float MaxMagSize { get { return _maximumMagSize; } }
@@ -19,6 +20,7 @@ namespace Assets.Scripts.Weapons
 
         [SerializeField] protected float _fireRate = 20f;     // 20 shots/sec
         [SerializeField] protected float _reloadTime = 3f;
+        [SerializeField] protected float _damage = 10f;
         [SerializeField] protected float _maxAmmunition = 90;
         [SerializeField] protected float _currentAmunition = 0;
         [SerializeField] protected float _maximumMagSize = 30;
@@ -26,7 +28,7 @@ namespace Assets.Scripts.Weapons
         [SerializeField] protected Transform _bulletSpawnPointTransform;
         [SerializeField] protected Bullet _bulletPrefab;
         //protected Coroutine _fireRoutine;       // Routine that fires and waits for set seconds to match fireRate
-        protected Coroutine _reloadRoutine;     // Routine waits for set reloadTime and refill the _currentAmunition with the remaining ammo  
+        protected Coroutine _reloadRoutine;       // Routine waits for set reloadTime and refill the _currentAmunition with the remaining ammo  
 
         protected float _minTimeBetweenShots = 0;
         protected float _timeLastShot = -1;

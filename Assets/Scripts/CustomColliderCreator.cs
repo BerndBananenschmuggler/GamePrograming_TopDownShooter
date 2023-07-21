@@ -43,7 +43,7 @@ public abstract class CustomColliderCreator : MonoBehaviour
     private Vector3 _prevColliderOffset;
 
 
-    private void Awake()
+    private void Start()
     {
         // Create new Collider based on selected ColliderShape
         CreateCollider(_colliderSize, _colliderRadius, _colliderHeight, _colliderOffset);
@@ -116,7 +116,7 @@ public abstract class CustomColliderCreator : MonoBehaviour
                 (_activeCollider as CapsuleCollider).direction = 2;
                 break;
             default:
-                _activeCollider = null;
+                //_activeCollider = null;
                 break;
         }
 

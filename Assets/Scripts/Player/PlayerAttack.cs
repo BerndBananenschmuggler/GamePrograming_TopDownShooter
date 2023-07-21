@@ -47,8 +47,10 @@ namespace Assets.Scripts.Player
             // Set WeaponPosition in Direction Player-To-Mouse
             _weaponPositionTransform.position = GetWeaponPosition(_mouseWorldPosition, transform.position, _weaponPositionDistance);
 
-            // Rotate the WeaponPosition towards the Direction Player-To-Mouse
-            _weaponPositionTransform.rotation = GetWeaponRotation(transform.position, _weaponPositionTransform.position);
+            // Rotate the WeaponPosition towards the Direction Player-To-Mouse            
+            Quaternion newRotation = GetWeaponRotation(transform.position, _weaponPositionTransform.position);
+            if (_weaponPositionTransform.rotation != newRotation)
+                _weaponPositionTransform.rotation = newRotation;
             /*
             // Check if rotation is neccessary
             if (Quaternion.Angle(newWeaponRotation, _weaponPositionTransform.rotation) != 0)

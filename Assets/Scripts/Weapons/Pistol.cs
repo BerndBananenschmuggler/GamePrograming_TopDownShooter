@@ -11,9 +11,6 @@ namespace Assets.Scripts.Weapons
 }
 public class Pistol : RangeWeapon
 {
-    private int count;
-
-    // Könnte eigentlich in der BaseClass bleiben
     public override void Fire()
     {
         if (Time.time < _timeLastShot + _minTimeBetweenShots)
@@ -23,17 +20,19 @@ public class Pistol : RangeWeapon
         if (_reloadRoutine != null)
             return;
 
-        // DEBUG
-        Debug.Log(++count);
-
 
         // Call Base FireMethod to reduce currentAmmo and handle auto Reload
         base.Fire();
 
+
+        Bullet bullet;
         // Spawn Bullet
         if (_bulletPrefab != null)
             if (_bulletSpawnPointTransform != null)
-                Instantiate(_bulletPrefab, _bulletSpawnPointTransform.position, Quaternion.LookRotation(transform.forward));
+            {
+                bullet = Instantiate(_bulletPrefab, _bulletSpawnPointTransform.position, Quaternion.LookRotation(transform.forward));
+                bullet.SetOwner(this);
+            }
 
         _timeLastShot = Time.time;
     }

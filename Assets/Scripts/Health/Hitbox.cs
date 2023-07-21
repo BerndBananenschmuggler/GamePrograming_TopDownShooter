@@ -14,6 +14,8 @@ public class Hitbox : CustomColliderCreator
     {
         if (_hitableLayermask == 0)
             Debug.LogWarning("No layer selected");
+
+        _isColliderActive = true;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -22,5 +24,8 @@ public class Hitbox : CustomColliderCreator
             OnHitDetectionSucceeded?.Invoke(other.gameObject);
         else
             OnHitDetectionFailed?.Invoke();
+
+        // Deactivate the hitbox itself to stop it from receiving another TriggerEnter Event
+        gameObject.SetActive(false);
     }
 }
