@@ -401,7 +401,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 511a524b626781443ace84cfa26494f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackRange: 5
+  State: 0
+  _attackRange: 10
   _equippedWeapon: {fileID: 0}
   _navAgent: {fileID: 1729911669}
 --- !u!114 &8317635603684512488
