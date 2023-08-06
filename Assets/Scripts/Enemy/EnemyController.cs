@@ -4,29 +4,29 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
 public class EnemyController : MonoBehaviour
 {
     public enum States { Move, Attack }
-    public States State;
-
-    public LayerMask HurtboxLayermask;
+    public States CurrentState;
 
     [SerializeField] private float _attackRange = 5f;
     [SerializeField] private RangeWeapon _equippedWeapon;
     [SerializeField] private NavMeshAgent _navAgent;
-
-    private const float MAX_ATTACK_ANGLE = 0.5f;
-
+    
     private Transform _playerTransform;
     private float _distanceToPlayer = float.MaxValue;
-    private LayerMask _playerSightScanIgnoreLayermask;
 
-    private void Awake()
-    {
-        _playerSightScanIgnoreLayermask = LayerMask.NameToLayer("Hurtbox");
-    }
+    private const float MAX_ATTACK_ANGLE = 0.5f;
+    private Coroutine _attackRoutine;
+    private float _aimDuration = 1.5f;
+    private float _shootLoadupDuration = 0.5f;
+    private float _attackCooldownDuration = 1f;
+    private bool _aimLocked = false;
+    private Vector3 _aimDirection;
+    private float _aimStartTime;
 
     private void Start()
     {
@@ -39,22 +39,25 @@ public class EnemyController : MonoBehaviour
     void Update()
     {
         _distanceToPlayer = Vector3.Distance(_playerTransform.position, transform.position);
-        // Check if looking at player?
-        // Maybe turn towards player when firing dont care while moving
-        //if(|| Vector3.Angle(transform.position, _playerTransform.position) > MAX_ATTACK_ANGLE)
-
-        Debug.Log($"Is Player visible: {IsPlayerVisibleFromPosition(transform.position)}");
 
         if (_distanceToPlayer > _attackRange || IsPlayerVisibleFromPosition(transform.position) == false)
         {
-            Move();
-            State = States.Move;
+            CurrentState = States.Move;
+            //Move();
         }
         else
         {
-            StopMove();
-            Attack();
-            State = States.Attack;
+            if(CurrentState == States.Move)
+            {
+                CurrentState = States.Attack;
+                StopMove();
+            }
+
+            if (_attackRoutine == null)
+            {
+                Debug.Log("CoroutineStart");
+                _attackRoutine = StartCoroutine(Attack());
+            }            
         }
     }    
 
@@ -79,29 +82,57 @@ public class EnemyController : MonoBehaviour
     private void StopMove()
     {
         // Stay in current position
-        _navAgent.SetDestination(transform.position);
-    }
+        _navAgent.ResetPath();
+    }   
 
-    private void Attack()
+    private IEnumerator Attack()
     {
-        // Aim Phase
-        // - Check if ray between transform and playerTransform hits anything but the player -> Player in sight,
-        // - if not in sight -> Move further until in sight
+        _aimLocked = false;
+        _aimStartTime = Time.time;
 
-        // Fire Phase
-        // - Use the weapon once
+        int aimLogCounter = 0;
 
-        // Repeat until State is not attack
+        Debug.Log("Attack Started");
+
+        // Rotate Enemy in direction towards Player (Weapon should always be on enemies forward)
+        while (!_aimLocked && Time.time < _aimStartTime + _aimDuration) 
+        {
+            if (aimLogCounter++ == 0)
+                Debug.Log("Aiming...");
+
+            // If State Changed => Abort Attack
+            if (CurrentState == States.Move)
+            {
+                Debug.Log("Attack Aborted");
+                _attackRoutine = null;
+                yield break;
+            }
+
+            _aimDirection = (_playerTransform.position - transform.position).normalized;
+            transform.rotation = Quaternion.LookRotation(_aimDirection, Vector3.up);
+            
+            yield return null;
+        }        
+
+        // Aim is locked now
+        _aimLocked = true;
+        Debug.Log("Aim Locked");
+
+        yield return new WaitForSeconds(_shootLoadupDuration);
+
+        Debug.Log("Fire");
+        _equippedWeapon.Fire();
+
+        yield return new WaitForSeconds(_attackCooldownDuration);
+        _attackRoutine = null;
     }
 
     private bool IsPlayerVisibleFromPosition(Vector3 position)
     {
         RaycastHit hit;
         //LayerMask ignoreMask = LayerMask.NameToLayer("Hurtbox");
-        // ~(1 << _playerSightScanIgnoreLayermask) -> Reverse of the Layer that should be ignored is accepted as Raycast targets
-        Physics.Raycast(position, _playerTransform.position - position, out hit, float.MaxValue, ~(1 << _playerSightScanIgnoreLayermask));
-        Debug.Log($"Hit layer: {LayerMask.LayerToName(hit.collider.gameObject.layer)}");
-        //Debug.Log($"Hit name: {hit.collider.name}");
+        // ~0 is Reverse of Nothing -> Everything + Ignore Triggers
+        Physics.Raycast(position, _playerTransform.position - position, out hit, float.MaxValue, ~0, QueryTriggerInteraction.Ignore);                
 
         return hit.collider.gameObject.layer == LayerMask.NameToLayer("Player");
     }

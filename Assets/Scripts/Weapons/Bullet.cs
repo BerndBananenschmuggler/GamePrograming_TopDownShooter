@@ -53,24 +53,56 @@ namespace Assets.Scripts.Weapons
             Destroy(gameObject);
         }
 
-        private void HandleHitDetectionSucceeded(GameObject obj)
+        private void HandleHitDetectionSucceeded(GameObject colliderObject)
         {
-            //// Dont do stuff to the Player
-            //if (obj.CompareTag("Player"))
-            //    return;
+            if (colliderObject == null)
+                return;
+
+            // Ignore friendly colliders
+            // Hurtbox -> Character.layer
+            if (colliderObject.transform.parent.gameObject.layer == _ownerWeapon.Owner.layer ||
+                colliderObject.layer == _ownerWeapon.Owner.layer)
+            {
+                //HandleFriendlyFire(colliderObject);
+                Debug.Log("HitFail");
+                return;
+            }
 
             Debug.Log("HitSuccess");
 
-            obj.GetComponent<Hurtbox>().Trigger(_ownerWeapon.Damage);
+            colliderObject.GetComponent<Hurtbox>().Trigger(_ownerWeapon.Damage);
 
             Destroy(gameObject);
         }
 
-        private void HandleHitDetectionFailed()
+        private void HandleHitDetectionFailed(GameObject colliderObject)
         {
+            if (colliderObject == null)
+                return;
+            
             Debug.Log("HitFail");
 
+            //Debug.LogWarning($"if ({colliderObject.transform.parent.gameObject.layer} == " +
+            //                 $"{_ownerWeapon.Owner.layer} || {colliderObject.layer} == {_ownerWeapon.Owner.layer})");
+
+            // Ignore friendly colliders
+            if (colliderObject.transform.parent.gameObject.layer == _ownerWeapon.Owner.layer ||
+                colliderObject.layer == _ownerWeapon.Owner.layer) 
+            {
+                //HandleFriendlyFire(colliderObject);
+                return;
+            }
+
             Destroy(gameObject);
+        }
+
+        private void HandleFriendlyFire(GameObject colliderObject)
+        {
+            Debug.LogError($"KOLLEGE ABGESCHOSSEN - Own Layer: {LayerMask.LayerToName(_ownerWeapon.Owner.layer)} " +
+                               $"Hit Layer: {LayerMask.LayerToName(colliderObject.transform.parent.gameObject.layer)}");
+            // Reactivate hitbox after unallowed hit
+            //_hitbox.Activate();
+            Debug.LogWarning($"IsActive: {_hitbox.gameObject.activeSelf}");
         }
     }
 }

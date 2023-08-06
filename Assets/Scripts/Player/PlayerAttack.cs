@@ -132,7 +132,17 @@ namespace Assets.Scripts.Player
         /// <returns></returns>
         private Quaternion GetWeaponRotation(Vector3 playerPosition, Vector3 weaponPosition)
         {
-            return Quaternion.LookRotation(weaponPosition - playerPosition, Vector3.up);
+            // Check if the positions are the same (within a small tolerance).
+            if (Vector3.Distance(playerPosition, weaponPosition) < 0.001f)
+            {
+                // Return the current rotation of the weapon (or any default rotation).
+                return _weaponPositionTransform.rotation;
+            }
+            else
+            {
+                // Calculate the rotation needed for the weapon to face the player.
+                return Quaternion.LookRotation(weaponPosition - playerPosition, Vector3.up);
+            }
         }
 
         private void UpdateMousePosition()

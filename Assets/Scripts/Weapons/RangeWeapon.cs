@@ -12,6 +12,7 @@ namespace Assets.Scripts.Weapons
     {
         public event Action OnReloaded;
 
+        public GameObject Owner { get { return _owner; } }
         public float Damage { get { return _damage; } }
         public float MaxAmmo { get { return _maxAmmunition; } }
         public float CurrentAmmo { get { return _currentAmunition; } }
@@ -32,6 +33,8 @@ namespace Assets.Scripts.Weapons
 
         protected float _minTimeBetweenShots = 0;
         protected float _timeLastShot = -1;
+
+        protected GameObject _owner;
 
 
         private void Awake()
@@ -55,6 +58,12 @@ namespace Assets.Scripts.Weapons
 
             // DEBUG
             LogAmmo();
+        }
+
+        private void Start()
+        {
+            // Weapon -> WeaponPosition -> Character -> Owner
+            _owner = transform.parent.parent.parent.gameObject;
         }
 
         public virtual void Fire()

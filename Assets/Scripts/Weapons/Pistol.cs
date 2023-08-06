@@ -8,40 +8,40 @@ using UnityEngine;
 
 namespace Assets.Scripts.Weapons
 {
-}
-public class Pistol : RangeWeapon
-{
-    public override void Fire()
+    public class Pistol : RangeWeapon
     {
-        if (Time.time < _timeLastShot + _minTimeBetweenShots)
-            return;
-        if (_currentMagFill <= 0)
-            return;
-        if (_reloadRoutine != null)
-            return;
-
-
-        // Call Base FireMethod to reduce currentAmmo and handle auto Reload
-        base.Fire();
-
-
-        Bullet bullet;
-        // Spawn Bullet
-        if (_bulletPrefab != null)
-            if (_bulletSpawnPointTransform != null)
-            {
-                bullet = Instantiate(_bulletPrefab, _bulletSpawnPointTransform.position, Quaternion.LookRotation(transform.forward));
-                bullet.SetOwner(this);
-            }
-
-        _timeLastShot = Time.time;
-    }
-        
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Vector3 startPos = transform.position + transform.forward;
-        Gizmos.DrawRay(startPos, transform.forward);
+        public override void Fire()
+        {
+            if (Time.time < _timeLastShot + _minTimeBetweenShots)
+                return;
+            if (_currentMagFill <= 0)
+                return;
+            if (_reloadRoutine != null)
+                return;
+    
+    
+            // Call Base FireMethod to reduce currentAmmo and handle auto Reload
+            base.Fire();
+    
+    
+            Bullet bullet;
+            // Spawn Bullet
+            if (_bulletPrefab != null)
+                if (_bulletSpawnPointTransform != null)
+                {
+                    bullet = Instantiate(_bulletPrefab, _bulletSpawnPointTransform.position, Quaternion.LookRotation(transform.forward));
+                    bullet.SetOwner(this);
+                }
+    
+            _timeLastShot = Time.time;
+        }
+            
+    
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.green;
+            Vector3 startPos = transform.position + transform.forward;
+            Gizmos.DrawRay(startPos, transform.forward);
+        }
     }
 }

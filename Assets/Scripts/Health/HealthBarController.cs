@@ -12,11 +12,14 @@ public class HealthBarController : MonoBehaviour
     private Health _health;
     private Camera _camera;
 
+    [SerializeField] private bool _isEnemyControlled = false;
+
     private void Start()
     {
         _healthBarImage.fillAmount = 1f;   
         _camera = Camera.main;
-        _canvasTransform = _healthBarImage.transform.parent.transform;
+        if (_isEnemyControlled)
+            _canvasTransform = _healthBarImage.transform.parent.transform;
     }
 
     private void OnEnable()
@@ -35,7 +38,8 @@ public class HealthBarController : MonoBehaviour
 
     private void Update()
     {
-        _canvasTransform.LookAt(_canvasTransform.position + _camera.transform.forward);
+        if (_isEnemyControlled)
+            _canvasTransform.LookAt(_canvasTransform.position + _camera.transform.forward);
     }
 
     private void HandleHealthChanged(float value)
