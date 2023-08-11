@@ -10,7 +10,7 @@ namespace Assets.Scripts.Weapons
 {
     public abstract class RangeWeapon : MonoBehaviour 
     {
-        public event Action OnReloaded;
+        public event Action ReloadCompleted;
 
         public GameObject Owner { get { return _owner; } }
         public float Damage { get { return _damage; } }
@@ -57,7 +57,7 @@ namespace Assets.Scripts.Weapons
             _currentAmunition -= _maximumMagSize;
 
             // DEBUG
-            LogAmmo();
+            //LogAmmo();
         }
 
         private void Start()
@@ -80,7 +80,7 @@ namespace Assets.Scripts.Weapons
                     _reloadRoutine = StartCoroutine(StartReload());
 
             // DEBUG
-            LogAmmo();
+            //LogAmmo();
         }
         public void Reload()
         {
@@ -132,9 +132,9 @@ namespace Assets.Scripts.Weapons
                     Debug.Log("Finished Reloading");
 
                     // DEBUG
-                    LogAmmo();
+                    //LogAmmo();
 
-                    OnReloaded?.Invoke();
+                    ReloadCompleted?.Invoke();
                 }
 
             // Make another Reload possible

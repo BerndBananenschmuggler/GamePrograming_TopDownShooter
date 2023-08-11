@@ -26,8 +26,8 @@ namespace Assets.Scripts.Weapons
 
             if (_hitbox == null)
                 Debug.LogWarning("Hitbox is missing");
-            _hitbox.OnHitDetectionSucceeded += HandleHitDetectionSucceeded;
-            _hitbox.OnHitDetectionFailed += HandleHitDetectionFailed;
+            _hitbox.HitDetectionSucceeded += HandleHitDetectionSucceeded;
+            _hitbox.HitDetectionFailed += HandleHitDetectionFailed;
         }        
 
         private void Start()

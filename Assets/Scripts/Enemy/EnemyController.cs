@@ -55,7 +55,6 @@ public class EnemyController : MonoBehaviour
 
             if (_attackRoutine == null)
             {
-                Debug.Log("CoroutineStart");
                 _attackRoutine = StartCoroutine(Attack());
             }            
         }
@@ -92,18 +91,18 @@ public class EnemyController : MonoBehaviour
 
         int aimLogCounter = 0;
 
-        Debug.Log("Attack Started");
+        //Debug.Log("Attack Started");
 
         // Rotate Enemy in direction towards Player (Weapon should always be on enemies forward)
         while (!_aimLocked && Time.time < _aimStartTime + _aimDuration) 
         {
             if (aimLogCounter++ == 0)
-                Debug.Log("Aiming...");
+                //Debug.Log("Aiming...");
 
             // If State Changed => Abort Attack
             if (CurrentState == States.Move)
             {
-                Debug.Log("Attack Aborted");
+                //Debug.Log("Attack Aborted");
                 _attackRoutine = null;
                 yield break;
             }
@@ -116,11 +115,11 @@ public class EnemyController : MonoBehaviour
 
         // Aim is locked now
         _aimLocked = true;
-        Debug.Log("Aim Locked");
+        //Debug.Log("Aim Locked");
 
         yield return new WaitForSeconds(_shootLoadupDuration);
 
-        Debug.Log("Fire");
+        //Debug.Log("Fire");
         _equippedWeapon.Fire();
 
         yield return new WaitForSeconds(_attackCooldownDuration);

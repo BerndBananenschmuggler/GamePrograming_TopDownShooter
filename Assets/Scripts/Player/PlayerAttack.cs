@@ -39,7 +39,7 @@ namespace Assets.Scripts.Player
 
         private void OnEnable()
         {
-            _equippedWeapon.OnReloaded += HandleWeaponReloaded;
+            _equippedWeapon.ReloadCompleted += HandleWeaponReloaded;
 
             _playerMovement = GetComponent<PlayerMovement>();
             _playerMovement.OnMoved += HandlePlayerMoved;
@@ -47,7 +47,7 @@ namespace Assets.Scripts.Player
 
         private void OnDisable()
         {
-            _equippedWeapon.OnReloaded -= HandleWeaponReloaded;
+            _equippedWeapon.ReloadCompleted -= HandleWeaponReloaded;
         }
 
         private void Update()

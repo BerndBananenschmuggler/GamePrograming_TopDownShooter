@@ -2490,6 +2490,7 @@ GameObject:
   - component: {fileID: 1569942398}
   - component: {fileID: 1569942399}
   - component: {fileID: 1569942400}
+  - component: {fileID: 1569942401}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2539,7 +2540,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 552d280db0ac350438588e7c04f466d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxWaveCount: 2
   _possibleSpawnPositions:
   - {fileID: 1914960960}
   - {fileID: 602122225}
@@ -2551,6 +2551,20 @@ MonoBehaviour:
   _objectToSpawn: {fileID: 9119463064702089570, guid: 3312b7c1cf4c18d40a8eb559a03bed57,
     type: 3}
   _maxObjectsAliveCount: 4
+--- !u!114 &1569942401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1569942397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08cfbfaa1c643954c9fe44b8d8a43971, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TestEntity: {fileID: 9119463064702089570, guid: 3312b7c1cf4c18d40a8eb559a03bed57,
+    type: 3}
 --- !u!1 &1576920348
 GameObject:
   m_ObjectHideFlags: 0

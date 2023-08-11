@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Hitbox : CustomColliderCreator
 {
-    public event Action<GameObject> OnHitDetectionSucceeded;
-    public event Action<GameObject> OnHitDetectionFailed;
+    public event Action<GameObject> HitDetectionSucceeded;
+    public event Action<GameObject> HitDetectionFailed;
 
     [SerializeField] private LayerMask _hitableLayermask;
 
@@ -20,12 +20,12 @@ public class Hitbox : CustomColliderCreator
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"Collision detected: {other.name}");
+        //Debug.Log($"Collision detected: {other.name}");
 
         if ((_hitableLayermask & (1 << other.gameObject.layer)) != 0)
-            OnHitDetectionSucceeded?.Invoke(other.gameObject);
+            HitDetectionSucceeded?.Invoke(other.gameObject);
         else            
-            OnHitDetectionFailed?.Invoke(other.gameObject);
+            HitDetectionFailed?.Invoke(other.gameObject);
 
         // Deactivate the hitbox itself to stop it from receiving another TriggerEnter Event
         //gameObject.SetActive(false);

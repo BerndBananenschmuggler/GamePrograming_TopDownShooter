@@ -28,12 +28,12 @@ public class HealthBarController : MonoBehaviour
         if (_health == null)
             Debug.LogWarning("Health is missing");
 
-        _health.OnHealthChanged += HandleHealthChanged;
+        _health.HealthChanged += HandleHealthChanged;
     }
 
     private void OnDisable()
     {
-        _health.OnHealthChanged -= HandleHealthChanged;
+        _health.HealthChanged -= HandleHealthChanged;
     }
 
     private void Update()
