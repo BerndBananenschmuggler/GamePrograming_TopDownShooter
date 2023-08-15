@@ -1,7 +1,7 @@
 - Sound
 - Enemy Movement (MovementControl, NavMesh)
 - Enemy Attacks (Different Types important for different Waves)
-- Map Design (Multiple Levels / Auto-Generated)
+- Map Design (Changing Walls?, otherwise static smart design
 - ParticleSystem Shots, Hit, ...
 - UI (PauseMenu, Finish/GameOverMenu, MainMenu)
 

@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    private Vector3 _cameraOffset = new Vector3(0,15,0);
-    private Quaternion _cameraRotation = Quaternion.Euler(90, 0, 0);
+    [SerializeField] private Vector3 _cameraOffset = new Vector3(0,15,0);
+    [SerializeField] private Quaternion _cameraRotation = Quaternion.Euler(90, 0, 0);
     [SerializeField] private Transform _playerTransform;
     [SerializeField] private Transform _cameraOriginTransform;
 

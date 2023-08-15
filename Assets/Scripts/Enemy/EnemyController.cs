@@ -43,7 +43,7 @@ public class EnemyController : MonoBehaviour
         if (_distanceToPlayer > _attackRange || IsPlayerVisibleFromPosition(transform.position) == false)
         {
             CurrentState = States.Move;
-            //Move();
+            Move();
         }
         else
         {

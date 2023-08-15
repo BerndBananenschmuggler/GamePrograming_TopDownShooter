@@ -10,6 +10,8 @@ namespace Assets.Scripts.Weapons
 {
     public class Pistol : RangeWeapon
     {
+        public AudioClip FireSound;
+
         public override void Fire()
         {
             if (Time.time < _timeLastShot + _minTimeBetweenShots)
@@ -31,12 +33,18 @@ namespace Assets.Scripts.Weapons
                 {
                     bullet = Instantiate(_bulletPrefab, _bulletSpawnPointTransform.position, Quaternion.LookRotation(transform.forward));
                     bullet.SetOwner(this);
+
+                    PlayBulletSound();
                 }
     
             _timeLastShot = Time.time;
         }
-            
-    
+
+        private void PlayBulletSound()
+        {
+            SoundManager.Instance.PlaySound(FireSound);
+        }
+
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.green;
