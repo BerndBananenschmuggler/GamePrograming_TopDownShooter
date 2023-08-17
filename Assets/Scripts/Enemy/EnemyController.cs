@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 public class EnemyController : MonoBehaviour
 {
     public enum States { Move, Attack }
-    public States CurrentState;
+    public States CurrentState {  get; private set; }
 
     [SerializeField] private float _attackRange = 5f;
     [SerializeField] private RangeWeapon _equippedWeapon;
@@ -19,9 +19,8 @@ public class EnemyController : MonoBehaviour
     private Transform _playerTransform;
     private float _distanceToPlayer = float.MaxValue;
 
-    private const float MAX_ATTACK_ANGLE = 0.5f;
     private Coroutine _attackRoutine;
-    private float _aimDuration = 1.5f;
+    private float _aimDuration = 0.85f;
     private float _shootLoadupDuration = 0.5f;
     private float _attackCooldownDuration = 1f;
     private bool _aimLocked = false;
@@ -62,6 +61,8 @@ public class EnemyController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        #if UNITY_EDITOR
+
         Handles.color = Color.yellow;
         Handles.DrawWireDisc(transform.position, transform.up, _attackRange);
 
@@ -69,7 +70,9 @@ public class EnemyController : MonoBehaviour
         {
             Handles.color = Color.red;
             Handles.DrawLine(_playerTransform.position, transform.position, 3f);
-        }        
+        }
+
+        #endif
     }
 
     private void Move()

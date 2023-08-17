@@ -39,7 +39,7 @@ public class HealthBarController : MonoBehaviour
     private void Update()
     {
         if (_isEnemyControlled)
-            _canvasTransform.LookAt(_canvasTransform.position + _camera.transform.forward);
+            _canvasTransform.LookAt(_canvasTransform.position + _camera.transform.rotation * Vector3.forward, _camera.transform.rotation * Vector3.up);
     }
 
     private void HandleHealthChanged(float value)

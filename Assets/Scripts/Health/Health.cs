@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
+    /// <summary>
+    /// Invoked if CurrentHealth of Health-Script is less/equal than 0.
+    /// Parameter: Sender (object)
+    /// </summary>
     public event Action<object> Died;
     public event Action<float> HealthChanged;
 
@@ -12,11 +16,17 @@ public class Health : MonoBehaviour
     public float CurrentHealth { get { return _currentHealth; } }
 
     [SerializeField] private float _maxHealth = 100;
-    [SerializeField] private float _currentHealth = 0;
+    [SerializeField] private float _currentHealth = 0;    
 
     private void Start()
     {
         _currentHealth = _maxHealth;
+        GameManager.Instance.WaveCleared += HandleWaveCleared;
+    }
+
+    private void HandleWaveCleared()
+    {
+        ApplyHeal(_maxHealth / 3);
     }
 
     public void ApplyDamage(float damage)

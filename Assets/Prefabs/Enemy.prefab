@@ -188,7 +188,7 @@ GameObject:
   - component: {fileID: 785408663}
   - component: {fileID: 785408662}
   m_Layer: 7
-  m_Name: Kimme
+  m_Name: Sight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -268,7 +268,7 @@ BoxCollider:
   m_GameObject: {fileID: 785408660}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -315,7 +315,7 @@ GameObject:
   - component: {fileID: 1148597103}
   - component: {fileID: 1148597104}
   m_Layer: 7
-  m_Name: PrototypeWeapon
+  m_Name: Pistol_Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -360,6 +360,7 @@ MonoBehaviour:
   _bulletSpawnPointTransform: {fileID: 951353835}
   _bulletPrefab: {fileID: 5259535689926024737, guid: b20cae04790681347a5a1869cda103d5,
     type: 3}
+  _fireSFX: {fileID: 8300000, guid: e07fd988f8ca97a40b87fc04a7398c0e, type: 3}
 --- !u!1 &1184336670
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,7 +388,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1184336670}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -398,7 +399,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 1.04}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &1184336674
@@ -598,8 +599,8 @@ Transform:
   m_GameObject: {fileID: 8084914982294291418}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1481720284}
   m_Father: {fileID: 8811187890794997614}
@@ -633,7 +634,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6af20d21fdb3e9846be9fcc5368045e6, type: 2}
+  - {fileID: 2100000, guid: 0860f85f22338834a8915e4ecff39b41, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -696,7 +697,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9119463064702089570}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -718,7 +719,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 511a524b626781443ace84cfa26494f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentState: 0
   _attackRange: 20
   _equippedWeapon: {fileID: 1148597104}
   _navAgent: {fileID: 1729911669}
@@ -760,7 +760,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 2.5
+  m_Speed: 4
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -952,17 +952,17 @@ PrefabInstance:
     - target: {fileID: 4423505328391889206, guid: ef73577b627e2bf4487372ef6ac1a81d,
         type: 3}
       propertyPath: _colliderSize.x
-      value: 1.1
+      value: 1.6
       objectReference: {fileID: 0}
     - target: {fileID: 4423505328391889206, guid: ef73577b627e2bf4487372ef6ac1a81d,
         type: 3}
       propertyPath: _colliderSize.y
-      value: 1.1
+      value: 1.6
       objectReference: {fileID: 0}
     - target: {fileID: 4423505328391889206, guid: ef73577b627e2bf4487372ef6ac1a81d,
         type: 3}
       propertyPath: _colliderSize.z
-      value: 1.1
+      value: 1.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef73577b627e2bf4487372ef6ac1a81d, type: 3}

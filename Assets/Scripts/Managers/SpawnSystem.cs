@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class SpawnSystem : MonoBehaviour
 {
+    public event Action<int> EnemyCountChanged;
     public event Action SpawnStarted;
     public event Action SpawnCompleted;
     public event Action WaveCleared;
@@ -88,6 +89,7 @@ public class SpawnSystem : MonoBehaviour
                 spawnPositionIndex = 0;
 
             _currentObjectsAliveCount++;
+            EnemyCountChanged?.Invoke(_currentObjectsAliveCount);
 
             Debug.Log($"Enitity spawned - Count: {_currentObjectsAliveCount}");
 
@@ -111,6 +113,7 @@ public class SpawnSystem : MonoBehaviour
     private void HandleEntityDied(object sender)
     {
         _currentObjectsAliveCount--;
+        EnemyCountChanged?.Invoke(_currentObjectsAliveCount);
 
         Debug.Log($"Enitity died - Count: {_currentObjectsAliveCount}");
 

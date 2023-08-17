@@ -11,8 +11,9 @@ namespace Assets.Scripts.Player
 {
     public class PlayerAttack : MonoBehaviour
     {
-        public event Action OnAttacked;
-        public event Action OnReloaded;
+        public event Action Attacked;
+        public event Action Reloaded;
+        public event Action ReloadStarted;
 
         [SerializeField] private LayerMask _groundLayermask;
 
@@ -37,13 +38,29 @@ namespace Assets.Scripts.Player
             _weaponPositionDistance = Mathf.Abs(Vector3.Distance(transform.position, _weaponPositionStart));
         }
 
+        private void Start()
+        {
+            GameManager.Instance.WaveCleared += HandleWaveCleared;
+        }
+
+        private void HandleWaveCleared()
+        {
+            if (_equippedWeapon == null)
+                return;
+
+            _equippedWeapon.RefillAmmo();
+        }
+
         private void OnEnable()
         {
             _equippedWeapon.ReloadCompleted += HandleWeaponReloaded;
+            _equippedWeapon.ReloadStarted += HandleWeaponReloadStarted;
 
             _playerMovement = GetComponent<PlayerMovement>();
             _playerMovement.OnMoved += HandlePlayerMoved;
-        }        
+        }
+
+        
 
         private void OnDisable()
         {
@@ -59,14 +76,6 @@ namespace Assets.Scripts.Player
             Quaternion newRotation = GetWeaponRotation(transform.position, _weaponPositionTransform.position);
             if (_weaponPositionTransform.rotation != newRotation)
                 _weaponPositionTransform.rotation = newRotation;
-            /*
-            // Check if rotation is neccessary
-            if (Quaternion.Angle(newWeaponRotation, _weaponPositionTransform.rotation) != 0)
-                
-                _weaponPositionTransform.rotation = newWeaponRotation;
-            else
-                Debug.LogWarning("ZERO");
-            */
         }
 
         private void OnDrawGizmos()
@@ -97,7 +106,7 @@ namespace Assets.Scripts.Player
 
             _equippedWeapon.Fire();
 
-            OnAttacked?.Invoke();
+            Attacked?.Invoke();
         }
 
         public void HandleReloadInput(CallbackContext context)
@@ -166,7 +175,12 @@ namespace Assets.Scripts.Player
 
         private void HandleWeaponReloaded()
         {
-            OnReloaded?.Invoke();
+            Reloaded?.Invoke();
+        }
+
+        private void HandleWeaponReloadStarted()
+        {
+            ReloadStarted?.Invoke();
         }
     }
 }

@@ -11,9 +11,13 @@ public class ObjectVisualizer : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        #if UNITY_EDITOR
+
         if (Handles.color != Color)
             Handles.color = Color;
 
         Handles.DrawSolidDisc(transform.position, transform.up, Radius);
+
+        #endif
     }
 }

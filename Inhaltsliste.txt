@@ -1,3 +1,8 @@
+- Schwierigkeitsgrade -> Gegner Damage
+- Highscore Liste?
+
+(- Gegner der sich selbst sprengt)
+
 - Sound
 - Enemy Movement (MovementControl, NavMesh)
 - Enemy Attacks (Different Types important for different Waves)

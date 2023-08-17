@@ -10,6 +10,7 @@ namespace Assets.Scripts.Weapons
 {
     public abstract class RangeWeapon : MonoBehaviour 
     {
+        public event Action ReloadStarted;
         public event Action ReloadCompleted;
 
         public GameObject Owner { get { return _owner; } }
@@ -28,7 +29,8 @@ namespace Assets.Scripts.Weapons
         [SerializeField] protected float _currentMagFill = 0;
         [SerializeField] protected Transform _bulletSpawnPointTransform;
         [SerializeField] protected Bullet _bulletPrefab;
-        //protected Coroutine _fireRoutine;       // Routine that fires and waits for set seconds to match fireRate
+        [SerializeField] protected AudioClip _fireSFX;
+                
         protected Coroutine _reloadRoutine;       // Routine waits for set reloadTime and refill the _currentAmunition with the remaining ammo  
 
         protected float _minTimeBetweenShots = 0;
@@ -43,6 +45,8 @@ namespace Assets.Scripts.Weapons
                 Debug.LogWarning("BulletPrefab is missing.");
             if(_bulletSpawnPointTransform == null)
                 Debug.LogWarning("BulletSpawnPointTransform is missing.");
+            if (_fireSFX == null)
+                Debug.LogWarning("FireSFX is missing");
 
             
             // Calculate the minimum time between 2 shots while using the fireRate
@@ -74,6 +78,8 @@ namespace Assets.Scripts.Weapons
             // Reduce current magFill each shot
             _currentMagFill--;
 
+            PlaySFX();
+
             // Start Reload when ammo is empty
             if (_currentMagFill <= 0)
                 if (_reloadRoutine == null)
@@ -97,9 +103,16 @@ namespace Assets.Scripts.Weapons
             }
         }
 
+        public void RefillAmmo()
+        {
+            _currentAmunition = MaxAmmo;
+            _currentMagFill = MaxMagSize;
+            _currentAmunition -= _currentMagFill;
+        }
+
         private IEnumerator StartReload()
         {
-            // Time to start a visual here.
+            ReloadStarted?.Invoke();
                        
             // Decide if a reload is needed and possible or not
             if (_currentMagFill < _maximumMagSize)
@@ -139,6 +152,16 @@ namespace Assets.Scripts.Weapons
 
             // Make another Reload possible
             _reloadRoutine = null;
+        }
+
+        private void PlaySFX()
+        {
+            if (_fireSFX == null)
+                return;
+            if (Time.timeScale == 0)
+                return;
+
+            SoundManager.Instance.PlaySound(_fireSFX);
         }
 
         private void LogAmmo()

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+#if UNITY_EDITOR
+
 [CanEditMultipleObjects]
 [CustomEditor(typeof(CustomColliderCreator), true)]
 public class CustomColliderEditor : Editor
@@ -85,3 +87,5 @@ public class CustomColliderEditor : Editor
         serializedObject.ApplyModifiedProperties();
     }
 }
+
+#endif

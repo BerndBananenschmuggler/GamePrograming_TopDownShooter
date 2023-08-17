@@ -10,8 +10,6 @@ namespace Assets.Scripts.Weapons
 {
     public class Pistol : RangeWeapon
     {
-        public AudioClip FireSound;
-
         public override void Fire()
         {
             if (Time.time < _timeLastShot + _minTimeBetweenShots)
@@ -19,12 +17,10 @@ namespace Assets.Scripts.Weapons
             if (_currentMagFill <= 0)
                 return;
             if (_reloadRoutine != null)
-                return;
+                return;    
     
-    
-            // Call Base FireMethod to reduce currentAmmo and handle auto Reload
-            base.Fire();
-    
+            // Call Base FireMethod to reduce currentAmmo and handle auto Reload + Play SFX
+            base.Fire();    
     
             Bullet bullet;
             // Spawn Bullet
@@ -32,17 +28,10 @@ namespace Assets.Scripts.Weapons
                 if (_bulletSpawnPointTransform != null)
                 {
                     bullet = Instantiate(_bulletPrefab, _bulletSpawnPointTransform.position, Quaternion.LookRotation(transform.forward));
-                    bullet.SetOwner(this);
-
-                    PlayBulletSound();
+                    bullet.SetOwner(this);                    
                 }
     
             _timeLastShot = Time.time;
-        }
-
-        private void PlayBulletSound()
-        {
-            SoundManager.Instance.PlaySound(FireSound);
         }
 
         private void OnDrawGizmos()

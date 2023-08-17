@@ -33,7 +33,8 @@ namespace Assets.Scripts.Player
             if (_rigidbody == null)
                 Debug.LogWarning("Player Rigidbody missing.");
         }
-    
+
+
         private void FixedUpdate()
         {
             // Trigger the OnMoved event if moveDir != 0
@@ -50,6 +51,12 @@ namespace Assets.Scripts.Player
                 Vector3.up * _rigidbody.velocity.y +
                 Vector3.forward * _moveDirection.z
             ) * _moveSpeed;
+
+            if (transform.position.y > 30)
+            {
+                Debug.LogWarning("Random Scheiﬂ");
+                transform.position = new Vector3(transform.position.x,0,transform.position.z);
+            }
         }
 
         public void HandleMovementInput(CallbackContext context)

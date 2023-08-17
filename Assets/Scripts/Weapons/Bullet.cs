@@ -63,7 +63,13 @@ namespace Assets.Scripts.Weapons
             if (colliderObject.transform.parent.gameObject.layer == _ownerWeapon.Owner.layer ||
                 colliderObject.layer == _ownerWeapon.Owner.layer)
             {
-                //HandleFriendlyFire(colliderObject);
+                Debug.Log("HitFail");
+                return;
+            }
+
+            // Check if hit was a bullet
+            if(colliderObject.transform.parent.GetComponent<Bullet>() != null)
+            {
                 Debug.Log("HitFail");
                 return;
             }
@@ -82,27 +88,22 @@ namespace Assets.Scripts.Weapons
             
             Debug.Log("HitFail");
 
-            //Debug.LogWarning($"if ({colliderObject.transform.parent.gameObject.layer} == " +
-            //                 $"{_ownerWeapon.Owner.layer} || {colliderObject.layer} == {_ownerWeapon.Owner.layer})");
-
             // Ignore friendly colliders
+            // If Hurtbox' Parent is on same layer as owner of the weapon of this bullet
             if (colliderObject.transform.parent.gameObject.layer == _ownerWeapon.Owner.layer ||
                 colliderObject.layer == _ownerWeapon.Owner.layer) 
             {
-                //HandleFriendlyFire(colliderObject);
+                return;
+            }
+
+            // Check if hit was a bullet
+            if (colliderObject.transform.parent.GetComponent<Bullet>() != null)
+            {
+                Debug.Log("HitFail");
                 return;
             }
 
             Destroy(gameObject);
-        }
-
-        private void HandleFriendlyFire(GameObject colliderObject)
-        {
-            Debug.LogError($"KOLLEGE ABGESCHOSSEN - Own Layer: {LayerMask.LayerToName(_ownerWeapon.Owner.layer)} " +
-                               $"Hit Layer: {LayerMask.LayerToName(colliderObject.transform.parent.gameObject.layer)}");
-            // Reactivate hitbox after unallowed hit
-            //_hitbox.Activate();
-            Debug.LogWarning($"IsActive: {_hitbox.gameObject.activeSelf}");
         }
     }
 }

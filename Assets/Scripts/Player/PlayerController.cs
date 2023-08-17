@@ -16,4 +16,9 @@ public class PlayerController : MonoBehaviour
         else
             Debug.LogWarning("More than 1 Player exists!");
     }
+
+    private void OnDestroy()
+    {
+        Instance = null;
+    }
 }
